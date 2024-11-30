@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import {useRouter, RouteParams, useFocusEffect} from 'expo-router';
 import { WordContext } from '@/context/WordContext';
 import { getKeywordListService, setLearnKeywordService } from '@/services/wordService';  // Servisleri import ediyoruz.
 
@@ -12,24 +12,24 @@ export default function HomeScreen() {
     const [apiData, setApiData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-
+    const fetchData = async () => {
+        try {
+            const response = await getKeywordListService();
+            console.log('response', response);
+            const data = response?.data || [];
+            setApiData(data);
+        } catch (err) {
+            setError('Veri yüklenirken bir hata oluştu.');
+        } finally {
+            setLoading(false);
+        }
+    };
     // API'den veriyi almak için useEffect
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getKeywordListService();
-                console.log('response', response);
-                const data = response?.data || [];
-                setApiData(data);
-            } catch (err) {
-                setError('Veri yüklenirken bir hata oluştu.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData();
+        }, [])
+    );
 
     // "Öğrenildi" butonuna basıldığında, kelimeyi API'ye göndererek öğrenildi olarak işaretliyoruz
     const handleLearnKeyword = async (id: string) => {
