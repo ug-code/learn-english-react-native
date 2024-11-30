@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useRef} from 'react';
 import {
     View,
     TextInput,
@@ -6,23 +6,40 @@ import {
     StyleSheet,
     Text,
     KeyboardAvoidingView,
-    TouchableWithoutFeedback,
-    Keyboard,
-    Platform
+    Platform,
+    Alert,
+    ActivityIndicator,
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import { WordContext } from '@/context/WordContext';
+import {useRouter} from 'expo-router';
+import {createKeywordService} from '@/services/wordService'; // Servis dosyasından import
 
 export default function AddWordScreen() {
     const [word, setWord] = useState('');
     const [definition, setDefinition] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const wordInputRef = useRef<TextInput>(null); // Kelime alanı için ref
+    const definitionInputRef = useRef<TextInput>(null); // Anlam alanı için ref
     const router = useRouter();
-    const { addWord } = useContext(WordContext);
 
-    const handleAddWord = () => {
-        if (word && definition) {
-            addWord({ word, definition, learned: false });
-            router.push('/'); // Ana sayfaya dön
+    const handleAddWord = async () => {
+        if (!word || !definition) {
+            Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            await createKeywordService('userId', word, definition); // Kullanıcı ID'si ve kelimeler
+            Alert.alert('Başarılı', 'Kelime başarıyla eklendi.');
+            setWord('');
+            setDefinition('');
+            wordInputRef.current?.focus(); // İlk input alanına geri odaklan
+            router.push('/');
+        } catch (error) {
+            Alert.alert('Hata', 'Kelime eklenirken bir hata oluştu.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -30,6 +47,7 @@ export default function AddWordScreen() {
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
             <View style={styles.inner}>
                 <Text style={styles.title}>Yeni Kelime Ekle</Text>
 
@@ -39,7 +57,8 @@ export default function AddWordScreen() {
                     placeholder="Kelime"
                     value={word}
                     onChangeText={setWord}
-                    autoFocus={Platform.OS === 'web'} // Webde otomatik odaklanmayı sağla
+                    ref={wordInputRef} // Ref atandı
+                    autoFocus={Platform.OS === 'web'} // Sadece webde otomatik odaklanma
                 />
 
                 <Text style={styles.label}>Anlamı:</Text>
@@ -48,11 +67,20 @@ export default function AddWordScreen() {
                     placeholder="Anlamı"
                     value={definition}
                     onChangeText={setDefinition}
-                    autoFocus={Platform.OS === 'web'} // Webde otomatik odaklanmayı sağla
+                    ref={definitionInputRef} // Ref atandı
+                    autoFocus={Platform.OS === 'web'} // Sadece webde otomatik odaklanma
                 />
 
-                <Button title="Kelime Ekle" onPress={handleAddWord} color="#4CAF50" />
+                {isLoading ? (
+                    <ActivityIndicator size="large"
+                                       color="#4CAF50"/>
+                ) : (
+                    <Button title="Kelime Ekle"
+                            onPress={handleAddWord}
+                            color="#4CAF50"/>
+                )}
             </View>
+
         </KeyboardAvoidingView>
     );
 }
@@ -71,7 +99,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 5,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: {width: 0, height: 4},
         shadowOpacity: 0.1,
         shadowRadius: 10,
     },

@@ -1,29 +1,79 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { WordContext } from '@/context/WordContext';
+import { getKeywordListService, setLearnKeywordService } from '@/services/wordService';  // Servisleri import ediyoruz.
 
 export default function HomeScreen() {
     const router = useRouter();
-    const { words, toggleLearned } = useContext(WordContext);
+    const { words } = useContext(WordContext);
+
+    // API'den gelen veriler için state
+    const [apiData, setApiData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
+
+    // API'den veriyi almak için useEffect
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getKeywordListService();
+                console.log('response', response);
+                const data = response?.data || [];
+                setApiData(data);
+            } catch (err) {
+                setError('Veri yüklenirken bir hata oluştu.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // "Öğrenildi" butonuna basıldığında, kelimeyi API'ye göndererek öğrenildi olarak işaretliyoruz
+    const handleLearnKeyword = async (id: string) => {
+        try {
+            // API'ye kelimeyi öğrenildi olarak işaretliyoruz
+            await setLearnKeywordService(id);
+
+            // API'den gelen veriyi güncelle
+            const updatedData = apiData.map((item) => {
+                if (item.id === id) {
+                    return { ...item, is_learned: true };  // Öğrenildi olarak işaretliyoruz
+                }
+                return item;
+            });
+
+            setApiData(updatedData);  // Güncellenmiş veriyi state'e kaydediyoruz
+
+            // alert('Kelime öğrenildi olarak işaretlendi!');
+        } catch (err) {
+            setError('Kelime güncellenirken bir hata oluştu.');
+        }
+    };
 
     return (
         <View style={styles.container}>
             <Button title="Kelime Ekle" onPress={() => router.push('/addWord')} color="#4CAF50" />
 
-            {words.length === 0 ? (
+            {loading ? (
+                <Text style={styles.infoText}>Yükleniyor...</Text>
+            ) : error ? (
+                <Text style={styles.infoText}>{error}</Text>
+            ) : apiData.length === 0 ? (
                 <Text style={styles.infoText}>Henüz bir kelime eklenmedi.</Text>
             ) : (
                 <FlatList
-                    data={words.filter((word: any) => !word.learned)}
+                    data={apiData.filter(item => !item.is_learned)}  // Öğrenilen kelimeleri filtreliyoruz
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => (
+                    renderItem={({ item }) => (
                         <View style={styles.card}>
-                            <Text style={styles.cardTitle}>{item.word}</Text>
-                            <Text style={styles.cardDefinition}>{item.definition}</Text>
+                            <Text style={styles.cardTitle}>{item?.eng_keyword}</Text>
+                            <Text style={styles.cardDefinition}>{item?.tr_keyword}</Text>
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => toggleLearned(index)}
+                                onPress={() => handleLearnKeyword(item?.id)}  // API'yi çağırıyoruz
                             >
                                 <Text style={styles.buttonText}>Öğrenildi</Text>
                             </TouchableOpacity>
