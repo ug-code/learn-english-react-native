@@ -6,7 +6,7 @@ import { PieChart } from 'react-native-chart-kit';
 export default function IndexScreen() {
     const router = useRouter();
 
-    const screenWidth = Dimensions.get('window').width;
+    const width = Math.max(Dimensions.get('window').width - 50, 200); // Negatif değerlerden kaçının
 
     const data = [
         {
@@ -31,7 +31,7 @@ export default function IndexScreen() {
 
             <PieChart
                 data={data}
-                width={screenWidth - 40}
+                width={width}
                 height={200}
                 chartConfig={{
                     color: () => '#000',
