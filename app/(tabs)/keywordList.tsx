@@ -1,21 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity } from 'react-native';
-import {useRouter, RouteParams, useFocusEffect} from 'expo-router';
+import React, { useState, useContext } from 'react';
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    TouchableOpacity,
+    ActivityIndicator,
+    Alert,
+} from 'react-native';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { WordContext } from '@/context/WordContext';
-import { getKeywordListService, setLearnKeywordService } from '@/services/wordService';  // Servisleri import ediyoruz.
+import { getKeywordListService, setLearnKeywordService } from '@/services/wordService';
 
 export default function IndexScreen() {
     const router = useRouter();
     const { words } = useContext(WordContext);
-
-    // API'den gelen veriler için state
     const [apiData, setApiData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+
     const fetchData = async () => {
         try {
             const response = await getKeywordListService();
-            console.log('response', response);
             const data = response?.data || [];
             setApiData(data);
         } catch (err) {
@@ -24,58 +30,49 @@ export default function IndexScreen() {
             setLoading(false);
         }
     };
-    // API'den veriyi almak için useEffect
+
     useFocusEffect(
         React.useCallback(() => {
             fetchData();
         }, [])
     );
 
-    // "Öğrenildi" butonuna basıldığında, kelimeyi API'ye göndererek öğrenildi olarak işaretliyoruz
     const handleLearnKeyword = async (id: string) => {
         try {
-            // API'ye kelimeyi öğrenildi olarak işaretliyoruz
             await setLearnKeywordService(id);
-
-            // API'den gelen veriyi güncelle
-            const updatedData = apiData.map((item) => {
-                if (item.id === id) {
-                    return { ...item, is_learned: true };  // Öğrenildi olarak işaretliyoruz
-                }
-                return item;
-            });
-
-            setApiData(updatedData);  // Güncellenmiş veriyi state'e kaydediyoruz
-
-            // alert('Kelime öğrenildi olarak işaretlendi!');
+            setApiData((prevData) =>
+                prevData.map((item) =>
+                    item.id === id ? { ...item, is_learned: true } : item
+                )
+            );
         } catch (err) {
-            setError('Kelime güncellenirken bir hata oluştu.');
+            Alert.alert('Hata', 'Kelime öğrenilirken bir hata oluştu.');
         }
     };
 
     return (
         <View style={styles.container}>
-            <Button title="Kelime Ekle" onPress={() => router.push('/addWord')} color="#4CAF50" />
-
             {loading ? (
-                <Text style={styles.infoText}>Yükleniyor...</Text>
+                <ActivityIndicator size="large" color="#4CAF50" />
             ) : error ? (
                 <Text style={styles.infoText}>{error}</Text>
             ) : apiData.length === 0 ? (
                 <Text style={styles.infoText}>Henüz bir kelime eklenmedi.</Text>
             ) : (
                 <FlatList
-                    data={apiData.filter(item => !item.is_learned)}  // Öğrenilen kelimeleri filtreliyoruz
+                    data={apiData.filter((item) => !item.is_learned)}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <View style={styles.card}>
-                            <Text style={styles.cardTitle}>{item?.eng_keyword}</Text>
-                            <Text style={styles.cardDefinition}>{item?.tr_keyword}</Text>
+                            <View style={styles.wordInfo}>
+                                <Text style={styles.cardTitle}>{item.eng_keyword}</Text>
+                                <Text style={styles.cardDefinition}>{item.tr_keyword}</Text>
+                            </View>
                             <TouchableOpacity
-                                style={styles.button}
-                                onPress={() => handleLearnKeyword(item?.id)}  // API'yi çağırıyoruz
+                                style={styles.learnButton}
+                                onPress={() => handleLearnKeyword(item.id)}
                             >
-                                <Text style={styles.buttonText}>Öğrenildi</Text>
+                                <Text style={styles.learnButtonText}>✔</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -88,19 +85,37 @@ export default function IndexScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f9f9f9',
         padding: 20,
-        backgroundColor: '#f5f5f5',
+    },
+    addButton: {
+        backgroundColor: '#4CAF50',
+        padding: 12,
+        borderRadius: 8,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
+    addButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     card: {
-        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#fff',
         padding: 15,
-        marginVertical: 10,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
         shadowRadius: 10,
         elevation: 5,
+        marginVertical: 10,
+    },
+    wordInfo: {
+        flex: 1,
     },
     cardTitle: {
         fontSize: 18,
@@ -110,18 +125,19 @@ const styles = StyleSheet.create({
     cardDefinition: {
         fontSize: 14,
         color: '#555',
-        marginVertical: 8,
+        marginTop: 5,
     },
-    button: {
+    learnButton: {
         backgroundColor: '#4CAF50',
-        paddingVertical: 10,
-        borderRadius: 5,
+        padding: 10,
+        borderRadius: 20,
+        justifyContent: 'center',
         alignItems: 'center',
     },
-    buttonText: {
+    learnButtonText: {
         color: 'white',
-        fontSize: 16,
         fontWeight: 'bold',
+        fontSize: 14,
     },
     infoText: {
         textAlign: 'center',

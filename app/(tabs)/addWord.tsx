@@ -35,7 +35,7 @@ export default function AddWordScreen() {
             setWord('');
             setDefinition('');
             wordInputRef.current?.focus(); // İlk input alanına geri odaklan
-             router.push('/');
+             router.push('/keywordList');
         } catch (error) {
             Alert.alert('Hata', 'Kelime eklenirken bir hata oluştu.');
         } finally {
