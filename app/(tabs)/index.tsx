@@ -1,62 +1,50 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
-import { PieChart } from 'react-native-chart-kit';
+import { PieChart } from 'react-native-gifted-charts';
 
 export default function IndexScreen() {
     const router = useRouter();
 
-    const width = Math.max(Dimensions.get('window').width - 50, 200); // Negatif değerlerden kaçının
-
-    const data = [
-        {
-            name: 'Öğrenilen',
-            population: 10, // Öğrenilen kelime sayısı
-            color: '#4CAF50',
-            legendFontColor: '#333',
-            legendFontSize: 15,
-        },
-        {
-            name: 'Kalan',
-            population: 990, // Kalan kelime sayısı
-            color: '#ddd',
-            legendFontColor: '#333',
-            legendFontSize: 15,
-        },
+    const pieData = [
+        { value: 47, color: '#4CAF50' }, // Öğrenilen
+        { value: 53, color: '#ddd' },    // Kalan
     ];
 
     return (
         <View style={styles.container}>
             <Text style={styles.welcomeText}>Hoş Geldiniz</Text>
-
-            <PieChart
-                data={data}
-                width={width}
-                height={200}
-                chartConfig={{
-                    color: () => '#000',
-                    labelColor: () => '#333',
-                }}
-                accessor="population"
-                backgroundColor="transparent"
-                paddingLeft="15"
-                absolute
-            />
-
-            <Text style={styles.wordCountText}>10 / 000 Kelime</Text>
-
-            <View style={styles.buttonContainer}>
-                <Button
-                    title="Yeni Kelime Öğren"
+            <View style={styles.chartContainer}>
+                <PieChart
+                    data={pieData}
+                    donut
+                    showText
+                    textSize={20}
+                    textColor="#333"
+                    radius={120}
+                    innerRadius={80}
+                    innerCircleColor="#fff"
+                    centerLabelComponent={() => (
+                        <View style={styles.centerLabel}>
+                            <Text style={styles.centerLabelValue}>10/000</Text>
+                            <Text style={styles.centerLabelText}>Kelime</Text>
+                        </View>
+                    )}
+                />
+            </View>
+            <View style={styles.buttonGroup}>
+                <TouchableOpacity
+                    style={[styles.button, { backgroundColor: '#4CAF50' }]}
                     onPress={() => router.push('/addWord')}
-                    color="#4CAF50"
-                />
-                <View style={styles.spacer} />
-                <Button
-                    title="Tekrar"
+                >
+                    <Text style={styles.buttonText}>Kelime Ekle</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.button, { backgroundColor: '#2196F3' }]}
                     onPress={() => router.push('/keywordList')}
-                    color="#2196F3"
-                />
+                >
+                    <Text style={styles.buttonText}>Tekrar</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -65,10 +53,10 @@ export default function IndexScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f5f5f5',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#f5f5f5',
     },
     welcomeText: {
         fontSize: 24,
@@ -76,17 +64,37 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         color: '#333',
     },
-    wordCountText: {
-        fontSize: 18,
-        marginTop: 10,
-        color: '#555',
-        fontWeight: 'bold',
+    chartContainer: {
+        marginBottom: 30,
     },
-    buttonContainer: {
+    centerLabel: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    centerLabelValue: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#4CAF50',
+    },
+    centerLabelText: {
+        fontSize: 16,
+        color: '#555',
+    },
+    buttonGroup: {
         flexDirection: 'row',
         marginTop: 30,
     },
-    spacer: {
-        width: 20,
+    button: {
+        flex: 1,
+        marginHorizontal: 10,
+        paddingVertical: 12,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
