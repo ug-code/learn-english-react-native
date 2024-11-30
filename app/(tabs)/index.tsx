@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { PieChart } from 'react-native-gifted-charts';
 
@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: 14, // Font boyutu küçültüldü
         fontWeight: 'bold',
+        textAlign: 'center', // Yazılar ortalandı
     },
 });
