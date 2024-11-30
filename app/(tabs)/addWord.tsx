@@ -1,5 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+    View,
+    TextInput,
+    Button,
+    StyleSheet,
+    Text,
+    KeyboardAvoidingView,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Platform
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { WordContext } from '@/context/WordContext';
 
@@ -17,30 +27,32 @@ export default function AddWordScreen() {
     };
 
     return (
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={styles.inner}>
-                    <Text style={styles.title}>Yeni Kelime Ekle</Text>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <View style={styles.inner}>
+                <Text style={styles.title}>Yeni Kelime Ekle</Text>
 
-                    <Text style={styles.label}>Kelime:</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Kelime"
-                        value={word}
-                        onChangeText={setWord}
-                    />
+                <Text style={styles.label}>Kelime:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Kelime"
+                    value={word}
+                    onChangeText={setWord}
+                    autoFocus={Platform.OS === 'web'} // Webde otomatik odaklanmayı sağla
+                />
 
-                    <Text style={styles.label}>Anlamı:</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Anlamı"
-                        value={definition}
-                        onChangeText={setDefinition}
-                    />
+                <Text style={styles.label}>Anlamı:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Anlamı"
+                    value={definition}
+                    onChangeText={setDefinition}
+                    autoFocus={Platform.OS === 'web'} // Webde otomatik odaklanmayı sağla
+                />
 
-                    <Button title="Kelime Ekle" onPress={handleAddWord} color="#4CAF50" />
-                </View>
-            </TouchableWithoutFeedback>
+                <Button title="Kelime Ekle" onPress={handleAddWord} color="#4CAF50" />
+            </View>
         </KeyboardAvoidingView>
     );
 }
