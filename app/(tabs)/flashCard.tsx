@@ -65,6 +65,7 @@ const FlashcardScreen = () => {
     };
 
     return (
+
         <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={styles.container}>
                 {cards.length > 0 && (

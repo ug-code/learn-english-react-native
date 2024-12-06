@@ -1,10 +1,18 @@
-import {Animated, Pressable, Text, View} from 'react-native';
+import { Animated, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { router, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import ScrollView = Animated.ScrollView;
-import React from 'react';
+import React from "react";
+
+export interface Category {
+    id: string;
+    topic: string;
+    url: string;
+    icon: string;
+}
 
 export interface Question {
     id: number;
@@ -13,6 +21,7 @@ export interface Question {
     answer: string;
     options: string[];
 }
+
 
 export default function TestScreen() {
     const [count, setCount] = useState<number>(0);
@@ -23,6 +32,9 @@ export default function TestScreen() {
     const [selectedBox, setSelectedBox] = useState<number | null>(null);
     const [getResultClicked, setGetResultClicked] = useState<boolean>(false);
     const router = useRouter();
+
+    // Dinamik Tab Bar Yüksekliği
+    const tabBarHeight = useBottomTabBarHeight();
 
     const staticQuestions: Question[] = [
         {
@@ -63,6 +75,7 @@ export default function TestScreen() {
         setUserAnswer(questions[count].options[index]);
     };
 
+
     const handleSave = () => {
         if (count < questions.length - 1) {
             if (questions[count].answer === userAnswer) {
@@ -73,12 +86,14 @@ export default function TestScreen() {
             setTime(15);
         } else {
             setGetResultClicked(true);
+            /*
             router.push({
                 pathname: "/(stack)/completed",
                 params: { score: userScore },
-            });
+            });*/
         }
     };
+
 
     useEffect(() => {
         if (time > 0) {
@@ -88,7 +103,7 @@ export default function TestScreen() {
 
             return () => clearInterval(timerId);
         } else if (time === 0) {
-            handleSave();
+            // handleSave();
         }
     }, [time]);
 
@@ -103,93 +118,96 @@ export default function TestScreen() {
     return (
         <View className="flex-1 bg-orange-100 p-4">
             <SafeAreaView className="flex-1">
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="p-4">
-
-                {/* Üst Kısım */}
-                <View className="w-full flex items-center flex-row justify-between mb-6">
-                    <Pressable onPress={() => router.back()}>
-                        <MaterialIcons name="cancel" size={44} color="#f97316" />
-                    </Pressable>
-                    <View className="flex items-center">
-                        <Text className="font-bold text-orange-500 text-lg">
-                            {questions[count]?.category}
-                        </Text>
-                        <Text className="text-gray-500 text-lg">{count + 1}/40</Text>
-                    </View>
-
-                    <View className="flex items-center">
-                        <AntDesign
-                            name="clockcircle"
-                            size={24}
-                            color="#f97316"
-                            className="mb-[1px]"
-                        />
-                        <Text className="font-bold text-xl">
-                            {time < 10 ? `0${time}` : time}
-                        </Text>
-                    </View>
-                </View>
-
-                {/* Orta Kısım: Soru ve Cevap */}
-                <View className="flex-1 justify-between">
-                    <View className="w-full bg-orange-500 py-4 h-[200px] rounded-2xl flex items-center justify-center px-2 mb-8">
-                        <Text className="text-2xl text-center font-bold">
-                            {questions[count]?.question}
-                        </Text>
-                    </View>
-
-                    <Text className="text-lg mb-3 text-orange-600 font-bold">
-                        Select your answer
-                    </Text>
-                    <View className="flex items-center mb-4">
-                        {questions[count]?.options.map((item, index) => (
-                            <Pressable
-                                className={`w-full ${
-                                    selectedBox === index
-                                        ? "bg-orange-200 border-[1px] border-orange-500"
-                                        : "bg-white"
-                                } py-6 px-4 rounded-2xl mb-3`}
-                                key={index}
-                                onPress={() => toggleColor(index)}
-                            >
-                                <Text className="text-xl text-center">{item}</Text>
-                            </Pressable>
-                        ))}
-                    </View>
-                </View>
-
-                {/* Alt Kısım: Butonlar */}
-                <View className="w-full flex flex-row items-center justify-between mt-4">
-                    {getResultClicked ? (
-                        <Pressable
-                            disabled={getResultClicked}
-                            className="bg-gray-300 shadow-sm p-4 rounded-xl w-full"
-                        >
-                            <Text className="font-bold text-xl text-center">
-                                Generating your score...
-                            </Text>
+                <ScrollView
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingBottom: tabBarHeight + 20, // Tab bar yüksekliğini hesaba kat
+                    }}
+                    className="p-4"
+                >
+                    {/* Üst Kısım */}
+                    <View className="w-full flex items-center flex-row justify-between mb-6">
+                        <Pressable onPress={() => router.back()}>
+                            <MaterialIcons name="cancel" size={44} color="#f97316" />
                         </Pressable>
-                    ) : (
-                        <>
+                        <View className="flex items-center">
+                            <Text className="font-bold text-orange-500 text-lg">
+                                {questions[count]?.category}
+                            </Text>
+                            <Text className="text-gray-500 text-lg">{count + 1}/40</Text>
+                        </View>
+
+                        <View className="flex items-center">
+                            <AntDesign
+                                name="clockcircle"
+                                size={24}
+                                color="#f97316"
+                                className="mb-[1px]"
+                            />
+                            <Text className="font-bold text-xl">
+                                {time < 10 ? `0${time}` : time}
+                            </Text>
+                        </View>
+                    </View>
+
+                    {/* Orta Kısım */}
+                    <View>
+                        <View className="w-full bg-orange-500 py-4 h-[120px] rounded-2xl flex items-center justify-center px-2 mb-8">
+                            <Text className="text-2xl text-center font-bold">
+                                {questions[count]?.question}
+                            </Text>
+                        </View>
+
+                        <Text className="text-lg mb-3 text-orange-600 font-bold">
+                            Select your answer
+                        </Text>
+                        <View className="flex items-center mb-4">
+                            {questions[count]?.options.map((item:any, index:any) => (
+                                <Pressable
+                                    className={`w-full ${
+                                        selectedBox === index
+                                            ? "bg-orange-200 border-[1px] border-orange-500"
+                                            : "bg-white"
+                                    } py-4 px-4 rounded-2xl mb-3`}
+                                    key={index}
+                                    onPress={() => toggleColor(index)}
+                                >
+                                    <Text className="text-xl text-center">{item}</Text>
+                                </Pressable>
+                            ))}
+                        </View>
+                    </View>
+
+                    {/* Alt Kısım */}
+                    <View className="w-full flex flex-row items-center justify-between mt-4">
+                        {getResultClicked ? (
                             <Pressable
-                                onPress={handleSkip}
-                                className="bg-orange-300 p-4 rounded-xl w-[48%]"
-                            >
-                                <Text className="font-bold text-xl text-center">SKIP</Text>
-                            </Pressable>
-                            <Pressable
-                                onPress={handleSave}
-                                className="bg-green-300 p-4 rounded-xl w-[48%]"
+                                disabled={getResultClicked}
+                                className="bg-gray-300 shadow-sm p-4 rounded-xl w-full"
                             >
                                 <Text className="font-bold text-xl text-center">
-                                    {count === questions.length - 1
-                                        ? "Get Result"
-                                        : "SAVE"}
+                                    Generating your score...
                                 </Text>
                             </Pressable>
-                        </>
-                    )}
-                </View>
+                        ) : (
+                            <>
+                                <Pressable
+                                    onPress={handleSkip}
+                                    className="bg-orange-300 p-4 rounded-xl w-[48%]"
+                                >
+                                    <Text className="font-bold text-xl text-center">SKIP</Text>
+                                </Pressable>
+                                <Pressable
+                                    onPress={handleSave}
+                                    className="bg-green-300 p-4 rounded-xl w-[48%]"
+                                >
+                                    <Text className="font-bold text-xl text-center">
+                                        {count === questions.length - 1 ? "Get Result" : "SAVE"}
+                                    </Text>
+                                </Pressable>
+                            </>
+                        )}
+                    </View>
                 </ScrollView>
             </SafeAreaView>
         </View>

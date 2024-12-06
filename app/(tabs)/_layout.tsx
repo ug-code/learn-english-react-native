@@ -61,6 +61,14 @@ export default function TabLayout() {
                                                          name="paperplane.fill"
                                                          color={color}/>,
                 }}
+            />            <Tabs.Screen
+                name="carousel"
+                options={{
+                    title: 'carousel',
+                    tabBarIcon: ({color}) => <IconSymbol size={28}
+                                                         name="paperplane.fill"
+                                                         color={color}/>,
+                }}
             />
             <Tabs.Screen
                 name='completed'
