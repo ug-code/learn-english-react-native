@@ -46,6 +46,7 @@ const WordListScreen = () => {
     return (
         <View style={styles.container}>
             {/* Üst Kısım */}
+
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton}
 
@@ -58,10 +59,8 @@ const WordListScreen = () => {
                               size={24}
                               color="#000"/>
                 </TouchableOpacity>
-                <Image
-                    source={{uri: 'https://via.placeholder.com/100x100'}} // Örnek görsel URL
-                    style={styles.iconImage}
-                />
+                <Text style={styles.title}>Kelimelerim</Text>
+                <Text style={styles.subtitle}>1 Kelime Listesi</Text>
                 <View style={styles.headerIcons}>
                     <TouchableOpacity>
                         <Ionicons name="create-outline"
@@ -170,11 +169,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 15,
-        backgroundColor: '#FAD7A0',
+        backgroundColor: "#FAD7A0",
+        paddingTop: 50,
+        paddingBottom: 20,
+        paddingHorizontal: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        position: "relative",
     },
     backButton: {
         padding: 5,
@@ -188,6 +189,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
+        position: "absolute",
+        top: 50,
+        right: 20,
+        width: 40,
+        height: 40,
+
     },
     titleContainer: {
         alignItems: 'center',
@@ -195,9 +202,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#f4f4f4',
     },
     title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#000',
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "#000",
+        textAlign: "center",
+    },
+    subtitle: {
+        fontSize: 16,
+        color: "#555",
+        textAlign: "center",
+        marginTop: 5,
     },
     metaInfo: {
         flexDirection: 'row',
