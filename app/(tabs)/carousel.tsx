@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Animated, {
@@ -10,17 +10,26 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
 } from 'react-native-reanimated';
-import {data} from '@/components/flashCard/data/data';
 import Card from '@/components/flashCard/Card';
 import Activity from '@/components/flashCard/Activity';
+import {getKeywordListService} from '@/services/wordService';
+import RNProgressBar from 'react-native-tooltip-progress-bar';
 
 
 const CarouselScreen = () => {
-    const [newData, setNewData] = useState([...data, ...data]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [activityIndex, setActivityIndex] = useState(0);
     const animatedValue = useSharedValue(0);
     const MAX = 3;
+
+    const [cards, setCards] = useState<any[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getKeywordListService();
+            setCards(response.data || []);
+        };
+        fetchData();
+    }, []);
 
     const animatedStyle = useAnimatedStyle(() => {
         if (animatedValue.value > currentIndex + 0.5) {
@@ -41,31 +50,38 @@ const CarouselScreen = () => {
     });
 
     return (
-        <GestureHandlerRootView style={{flex: 1}}>
-            <SafeAreaView style={styles.container}>
+        <>
 
-                <View style={styles.cardContainer}>
-                    {newData.map((item, index) => {
-                        if (index > currentIndex + MAX || index < currentIndex) {
-                            return null;
-                        }
-                        return (
-                            <Card
-                                newData={newData}
-                                setNewData={setNewData}
-                                maxVisibleItems={MAX}
-                                item={item}
-                                index={index}
-                                dataLength={newData.length}
-                                animatedValue={animatedValue}
-                                currentIndex={currentIndex}
-                                setCurrentIndex={setCurrentIndex}
-                                key={index}
-                            />
-                        );
-                    })}
-                </View>
-                {/*
+            <GestureHandlerRootView style={{flex: 1}}>
+                <SafeAreaView style={styles.container}>
+                    <View >
+                        <RNProgressBar
+                            options={{leftColor: '#4385f0', rightColor: '#aac0e3'}}
+                            value={activityIndex}
+                        />
+                    </View>
+                    <View style={styles.cardContainer}>
+                        {cards.map((item, index) => {
+                            if (index > currentIndex + MAX || index < currentIndex) {
+                                return null;
+                            }
+                            return (
+                                <Card
+                                    newData={cards}
+                                    setNewData={setCards}
+                                    maxVisibleItems={MAX}
+                                    item={item}
+                                    index={index}
+                                    dataLength={cards.length}
+                                    animatedValue={animatedValue}
+                                    currentIndex={currentIndex}
+                                    setCurrentIndex={setCurrentIndex}
+                                    key={index}
+                                />
+                            );
+                        })}
+                    </View>
+                    {/*
                 <Text style={styles.text}>Recent Activity</Text>
                 <View style={styles.activityContainer}>
                     <Animated.ScrollView
@@ -77,8 +93,10 @@ const CarouselScreen = () => {
                     </Animated.ScrollView>
                 </View>
                 */}
-            </SafeAreaView>
-        </GestureHandlerRootView>
+                </SafeAreaView>
+            </GestureHandlerRootView>
+        </>
+
     );
 };
 
@@ -87,7 +105,7 @@ export default CarouselScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#111111',
+        backgroundColor: '#dcc530',
     },
     cardContainer: {
         flex: 1,

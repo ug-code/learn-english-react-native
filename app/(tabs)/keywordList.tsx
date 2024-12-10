@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,12 +9,10 @@ import {
     Alert,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
-import { WordContext } from '@/context/WordContext';
 import { getKeywordListService, setLearnKeywordService } from '@/services/wordService';
 
 export default function IndexScreen() {
     const router = useRouter();
-    const { words } = useContext(WordContext);
     const [apiData, setApiData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');

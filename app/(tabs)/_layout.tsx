@@ -1,6 +1,6 @@
 import {Tabs} from 'expo-router';
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, Text} from 'react-native';
 
 import {HapticTab} from '@/components/HapticTab';
 import {IconSymbol} from '@/components/ui/IconSymbol';
@@ -8,7 +8,7 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import {Colors} from '@/constants/Colors';
 import {useColorScheme} from '@/hooks/useColorScheme';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import {FontAwesome5} from '@expo/vector-icons';
+import {FontAwesome5, Ionicons} from '@expo/vector-icons';
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
@@ -31,17 +31,18 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: 'Dashboard',
-                    tabBarIcon: ({color}) => <IconSymbol size={28}
-                                                         name="house.fill"
-                                                         color={color}/>,
+                    title: '',
+                    tabBarIcon: ({color}) =>
+                        <Ionicons name="home-outline" size={28} color="#3b5998" />,
                 }}
             />
             <Tabs.Screen
                 name="keywordList"
                 options={{
-                    title: 'Kelime Listesi',
-                    tabBarIcon: ({color}) => <MaterialIcons color={color} size={28} name={"note"}  />,
+                    title: 'Kelimelerim',
+                    tabBarIcon: ({color}) =>
+                    <Ionicons name="folder-outline" size={28} color="#3b5998" />
+
                 }}
             />
             <Tabs.Screen
@@ -78,7 +79,9 @@ export default function TabLayout() {
                         <FontAwesome5 name='user-alt' size={24} color={color} />
                     ),
                 }}
-            />      <Tabs.Screen
+            />
+
+            <Tabs.Screen
                 name='test'
                 options={{
                     title: 'test',
@@ -87,6 +90,8 @@ export default function TabLayout() {
                     ),
                 }}
             />
+
+
         </Tabs>
     );
 }

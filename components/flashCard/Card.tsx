@@ -9,13 +9,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
-import {DataType} from '@/components/flashCard/data/data';
 
 type Props = {
-  newData: DataType[];
-  setNewData: React.Dispatch<React.SetStateAction<DataType[]>>;
+  newData:any;
+  setNewData: React.Dispatch<React.SetStateAction<any>>;
   maxVisibleItems: number;
-  item: DataType;
+  item: any;
   index: number;
   dataLength: number;
   animatedValue: SharedValue<number>;
@@ -60,6 +59,7 @@ const Card = ({
     })
     .onEnd(e => {
       if (currentIndex === index) {
+        console.log("bitti");
         // If the swipe distance is greater than 150 or the swipe velocity is greater than 1000
         // go to the next card
         if (Math.abs(e.translationX) > 150 || Math.abs(e.velocityX) > 1000) {
@@ -122,26 +122,26 @@ const Card = ({
       <Animated.View
         style={[
           styles.container,
-          {backgroundColor: item.backgroundColor, zIndex: dataLength - index},
+          {backgroundColor: '#6d85a4', zIndex: dataLength - index},
           animatedStyle,
         ]}>
         <View style={styles.top}>
-          <Text style={styles.textName}>{item.name}</Text>
+          <Text style={styles.textName}>{item.eng_keyword}</Text>
           <View style={styles.imageContainer}>
             <Image source={item.image} style={styles.image} />
           </View>
         </View>
         <View style={styles.middle}>
-          <Text style={styles.textNumber}>{item.number}</Text>
+          <Text style={styles.textNumber}>{item.tr_keyword}</Text>
         </View>
         <View style={styles.bottom}>
           <View>
             <Text style={styles.text}>Valid thru</Text>
-            <Text style={styles.text}>{item.exp}</Text>
+            <Text style={styles.text}>{item.category}</Text>
           </View>
           <View>
             <Text style={styles.text}>Cvv</Text>
-            <Text style={styles.text}>{item.cvv}</Text>
+            <Text style={styles.text}>{item.is_learned}</Text>
           </View>
         </View>
       </Animated.View>
