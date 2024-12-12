@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native';
-import {FontAwesome5, Ionicons} from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 import React, {useState} from 'react';
 import {useFocusEffect, useLocalSearchParams, useRouter} from 'expo-router';
 import {getKeywordService} from '@/services/wordService';
