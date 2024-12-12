@@ -1,8 +1,10 @@
+//const BASE_URL = 'https://quarrelsome-tisha-larapi-cef81b40.koyeb.app/api/v1/mobileApp';
 const BASE_URL = 'https://quarrelsome-tisha-larapi-cef81b40.koyeb.app/api/v1/mobileApp';
 
 export const API_ENDPOINTS = {
     createKeyword: `${BASE_URL}/createKeyword`,
     getKeywordList: `${BASE_URL}/getKeywordList`,
+    getKeyword: `${BASE_URL}/getKeyword/`,
     setLearnKeyword: `${BASE_URL}/setLearnKeyword`,
 };
 
@@ -57,7 +59,30 @@ export const getKeywordListService = async () => {
 };
 
 
-export const setLearnKeywordService =async (id:any) => {
+export const getKeywordService = async (id: any) => {
+    try {
+        4
+        const response = await fetch(API_ENDPOINTS.getKeyword + id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('API isteği başarısız oldu!');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('API hatası:', error);
+        throw error;
+    }
+};
+
+
+export const setLearnKeywordService = async (id: any) => {
     try {
         const response = await fetch(`${API_ENDPOINTS.setLearnKeyword}/${id}`, {
             method: 'GET',

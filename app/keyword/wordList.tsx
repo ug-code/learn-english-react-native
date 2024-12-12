@@ -126,34 +126,43 @@ const WordListScreen = () => {
                 {/* Örnek Kelime */}
 
 
+                {loading ? (
+                    <ActivityIndicator size="large"
+                                       color="#4CAF50"/>
+                ) : error ? (
+                    <Text style={styles.wordItem}>{error}</Text>
+                ) : apiData.length === 0 ? (
+                    <Text style={styles.wordItem}>Henüz bir kelime eklenmedi.</Text>
+                ) : (
+                    apiData.map((item) => (
+                        <View key={item.id}
+                              style={styles.wordItem}>
+                            <Image
+                                source={{uri: 'https://via.placeholder.com/50x50'}} // Örnek görsel URL
+                                style={styles.wordImage}
+                            />
+                            <TouchableOpacity style={styles.wordTextContainer}
 
-                    {loading ? (
-                        <ActivityIndicator size="large"
-                                           color="#4CAF50"/>
-                    ) : error ? (
-                        <Text style={styles.wordItem}>{error}</Text>
-                    ) : apiData.length === 0 ? (
-                            <Text style={styles.wordItem}>Henüz bir kelime eklenmedi.</Text>
-                        ) :(
-                        apiData.map((item) => (
-                            <View key={item.id} style={styles.wordItem}>
-                                <Image
-                                    source={{uri: 'https://via.placeholder.com/50x50'}} // Örnek görsel URL
-                                    style={styles.wordImage}
-                                />
-                                <View style={styles.wordTextContainer}>
-                                    <Text style={styles.wordTitle}>{item?.eng_keyword}</Text>
-                                    <Text style={styles.wordSubtitle}>{item.tr_keyword}</Text>
-                                </View>
-                                <TouchableOpacity>
-                                    <Ionicons name="close"
-                                              size={24}
-                                              color="#888"/>
-                                </TouchableOpacity>
-                            </View>
-                        ))
-                        )}
+                                              onPress={() => {
+                                                  // Navigate using the `navigation` prop that you received
+                                                  //navigation.navigate('index');
+                                                  const keywordId: string = (item?.id).toString() ?? '';
+                                                  console.log("keywordId",keywordId);
+                                                  // router.dismissTo('/keyword/[keywordId]')
+                                                  router.push({ pathname: '/keyword/[keywordId]', params: { keywordId: keywordId }})
+                                              }}>
 
+                                <Text style={styles.wordTitle}>{item?.eng_keyword}</Text>
+                                <Text style={styles.wordSubtitle}>{item.tr_keyword}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Ionicons name="close"
+                                          size={24}
+                                          color="#888"/>
+                            </TouchableOpacity>
+                        </View>
+                    ))
+                )}
 
 
             </ScrollView>
@@ -169,13 +178,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     header: {
-        backgroundColor: "#FAD7A0",
+        backgroundColor: '#FAD7A0',
         paddingTop: 50,
         paddingBottom: 20,
         paddingHorizontal: 20,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
-        position: "relative",
+        position: 'relative',
     },
     backButton: {
         padding: 5,
@@ -189,7 +198,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-        position: "absolute",
+        position: 'absolute',
         top: 50,
         right: 20,
         width: 40,
@@ -203,14 +212,14 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: "bold",
-        color: "#000",
-        textAlign: "center",
+        fontWeight: 'bold',
+        color: '#000',
+        textAlign: 'center',
     },
     subtitle: {
         fontSize: 16,
-        color: "#555",
-        textAlign: "center",
+        color: '#555',
+        textAlign: 'center',
         marginTop: 5,
     },
     metaInfo: {

@@ -1,12 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import {ParamListBase, useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+
 import {useRouter} from 'expo-router';
 
 const KeywordCategoryScreen = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const router = useRouter();
 
 

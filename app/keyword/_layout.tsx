@@ -12,6 +12,11 @@ export default function ChatsLayout() {
                           options={{
                               headerShown: false
             }}/>
+
+            <Stack.Screen name="[keywordId]"
+                          options={{
+                              headerShown: false
+            }}/>
         </Stack>
     )
 }
