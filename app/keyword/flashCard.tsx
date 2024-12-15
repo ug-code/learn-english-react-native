@@ -181,7 +181,7 @@ const FlashCardScreen = () => {
                                           selectable>{filteredCards[cardIndex]?.detail[0]?.phonetic || ''}</Text>
 
 
-                                    {(filteredCards[cardIndex]?.detail.length>0) && filteredCards[cardIndex]?.detail?.map((item: any, index: number) => (
+                                    {(filteredCards[cardIndex]?.detail.length > 0) && filteredCards[cardIndex]?.detail?.map((item: any, index: number) => (
                                         item?.meanings?.map((meaning: any, meaningKey: number) => (
                                             <View key={`${index}-${meaningKey}`}
                                                   style={styles.meaningContainer}>
@@ -239,9 +239,7 @@ const FlashCardScreen = () => {
                                     style={styles.learnButton}
                                     onPress={() => handleLearned(filteredCards[cardIndex].id, filteredCards[cardIndex].is_learned)}>
                                     <Text style={styles.learnButtonText}>
-
                                         {filteredCards[cardIndex].is_learned ? 'Çıkar' : 'Öğrendim.'}
-
 
                                     </Text>
                                 </TouchableOpacity>
@@ -251,13 +249,24 @@ const FlashCardScreen = () => {
                         {/* Preview of previous and next cards */}
                         {cardIndex > 0 && (
                             <View style={[styles.preview, styles.leftPreview]}>
-                                <Text style={styles.previewText}>{filteredCards[cardIndex - 1]?.eng_keyword}</Text>
+
+
+                                <TouchableOpacity
+                                    onPress={() => setCardIndex(cardIndex - 1)}>
+                                    <Text style={styles.previewText}>{filteredCards[cardIndex - 1]?.eng_keyword}</Text>
+                                </TouchableOpacity>
                             </View>
                         )}
                         {cardIndex < filteredCards.length - 1 && (
+
+
                             <View style={[styles.preview, styles.rightPreview]}>
-                                <Text style={styles.previewText}>{filteredCards[cardIndex + 1]?.eng_keyword}</Text>
+                                <TouchableOpacity
+                                    onPress={() => setCardIndex(cardIndex + 1)}>
+                                    <Text style={styles.previewText}>{filteredCards[cardIndex + 1]?.eng_keyword}</Text>
+                                </TouchableOpacity>
                             </View>
+
                         )}
                     </View>
                 )}
