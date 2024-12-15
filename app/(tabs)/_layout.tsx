@@ -39,7 +39,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="addWord"
                 options={{
-                    title: 'Kelime Ekle',
+                    title: 'Add Word',
                     tabBarIcon: ({color}) => <IconSymbol size={28}
                                                          name="paperplane.fill"
                                                          color={color}/>,

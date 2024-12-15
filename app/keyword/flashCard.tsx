@@ -117,11 +117,11 @@ const FlashCardScreen = () => {
     return (
         <View style={styles.container}>
             <KeywordHeader dismissToPath="/keyword/wordList">
-                <Text style={styles.headerTitle}>Kelimelerim</Text>
-                <Text style={styles.subtitle}>1 Kelime Listesi</Text>
+                <Text style={styles.headerTitle}>Words</Text>
+                <Text style={styles.subtitle}>1 Word List</Text>
             </KeywordHeader>
             <View style={styles.infoContainer}>
-                <Text style={styles.infoText}>Kelime: {cardIndex + 1}/{filteredCards.length}</Text>
+                <Text style={styles.infoText}>Word: {cardIndex + 1}/{filteredCards.length}</Text>
             </View>
 
             {/* Filter Buttons */}
@@ -130,19 +130,19 @@ const FlashCardScreen = () => {
                     style={[styles.filterButton, filter === 'all' && styles.activeFilter]}
                     onPress={() => setFilter('all')}
                 >
-                    <Text style={styles.filterText}>Tümü</Text>
+                    <Text style={styles.filterText}>All</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.filterButton, filter === 'learned' && styles.activeFilter]}
                     onPress={() => setFilter('learned')}
                 >
-                    <Text style={styles.filterText}>Öğrendiklerim</Text>
+                    <Text style={styles.filterText}>learned</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.filterButton, filter === 'notLearned' && styles.activeFilter]}
                     onPress={() => setFilter('notLearned')}
                 >
-                    <Text style={styles.filterText}>Öğrenmediklerim</Text>
+                    <Text style={styles.filterText}>Not Learned</Text>
                 </TouchableOpacity>
             </View>
 
@@ -239,7 +239,7 @@ const FlashCardScreen = () => {
                                     style={styles.learnButton}
                                     onPress={() => handleLearned(filteredCards[cardIndex].id, filteredCards[cardIndex].is_learned)}>
                                     <Text style={styles.learnButtonText}>
-                                        {filteredCards[cardIndex].is_learned ? 'Çıkar' : 'Öğrendim.'}
+                                        {filteredCards[cardIndex].is_learned ? 'Remove' : 'Lerned.'}
 
                                     </Text>
                                 </TouchableOpacity>

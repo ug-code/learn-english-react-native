@@ -51,7 +51,7 @@ export default function KeywordIdScreen() {
             {/* Üst Kısım */}
 
             <KeywordHeader dismissToPath="/keyword/wordList">
-                <Text style={styles.headerTitle}>Kelimelerim</Text>
+                <Text style={styles.headerTitle}>Words</Text>
                 <Text style={styles.subtitle}>1 Kelime Listesi</Text>
             </KeywordHeader>
 

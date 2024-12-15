@@ -81,7 +81,7 @@ const WordListScreen = () => {
                 </View>
                 <View style={styles.actionButtons}>
                     <TouchableOpacity style={styles.shareButton}>
-                        <Text style={styles.buttonText}>Paylaş</Text>
+                        <Text style={styles.buttonText}>Share</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.studyButton}
                                       onPress={() => {
@@ -89,7 +89,7 @@ const WordListScreen = () => {
                                           // router.dismissTo('/keyword/[keywordId]')
                                           router.dismissTo('/keyword/flashCard');
                                       }}>
-                        <Text style={styles.buttonText}>Çalış</Text>
+                        <Text style={styles.buttonText}>Work</Text>
                     </TouchableOpacity>
                 </View>
             </View>

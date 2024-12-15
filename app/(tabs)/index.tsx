@@ -62,7 +62,7 @@ const IndexScreen = () => {
                                       }}
                     >
                         <Ionicons name="folder-outline" size={40} color="#3b5998" />
-                        <Text style={styles.cardText}>Kelimelerim</Text>
+                        <Text style={styles.cardText}>Words </Text>
                         <View style={styles.notificationBadge}>
                             <Text style={styles.badgeText}>
                                 {loading ? (
@@ -78,7 +78,7 @@ const IndexScreen = () => {
 
                     <TouchableOpacity style={styles.card}>
                         <Ionicons name="cube-outline" size={40} color="#3b5998" />
-                        <Text style={styles.cardText}>Günlük Kelimeler</Text>
+                        <Text style={styles.cardText}>Daily Keyword</Text>
                         <View style={styles.notificationBadge}>
                             <Text style={styles.badgeText}>10</Text>
                         </View>
@@ -88,32 +88,32 @@ const IndexScreen = () => {
                 <View style={styles.sectionRow}>
                     <TouchableOpacity style={styles.card}>
                         <Ionicons name="text-outline" size={40} color="#3b5998" />
-                        <Text style={styles.cardText}>Kelime Bilgisi</Text>
+                        <Text style={styles.cardText}>Vocabulary</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.card}>
                         <Ionicons name="book-outline" size={40} color="#3b5998" />
-                        <Text style={styles.cardText}>Dilbilgisi</Text>
+                        <Text style={styles.cardText}>Grammar</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.sectionRow}>
                     <TouchableOpacity style={styles.card}>
                         <Ionicons name="mic-outline" size={40} color="#3b5998" />
-                        <Text style={styles.cardText}>Telaffuz</Text>
+                        <Text style={styles.cardText}>Pronunciation</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.card}>
                         <Ionicons name="chatbubble-outline" size={40} color="#3b5998" />
-                        <Text style={styles.cardText}>İfadeler</Text>
+                        <Text style={styles.cardText}>Expressions</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.sectionRow}>
                     <TouchableOpacity style={[styles.card, styles.disabledCard]}>
                         <Ionicons name="book" size={40} color="#b0b0b0" />
-                        <Text style={[styles.cardText, { color: "#b0b0b0" }]}>Okuma</Text>
-                        <Text style={styles.comingSoon}>Yakında Geliyor</Text>
+                        <Text style={[styles.cardText, { color: "#b0b0b0" }]}>Reading</Text>
+                        <Text style={styles.comingSoon}>Coming soon</Text>
                     </TouchableOpacity>
                 </View>
             </View>
