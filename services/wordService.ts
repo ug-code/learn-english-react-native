@@ -1,5 +1,5 @@
-//const BASE_URL = 'https://quarrelsome-tisha-larapi-cef81b40.koyeb.app/api/v1/mobileApp';
-const BASE_URL = 'http://127.0.0.1:8000/api/v1/mobileApp';
+const BASE_URL = 'https://quarrelsome-tisha-larapi-cef81b40.koyeb.app/api/v1/mobileApp';
+//const BASE_URL = 'http://127.0.0.1:8000/api/v1/mobileApp';
 
 export const API_ENDPOINTS = {
     createKeyword: `${BASE_URL}/createKeyword`,
