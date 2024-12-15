@@ -74,7 +74,7 @@ export default function KeywordIdScreen() {
                     <Text style={styles.content}>Henüz bir kelime eklenmedi.</Text>
                 ) : (
 
-                    apiData.translate?.map((item: any) => (
+                    (apiData?.translate?.length > 0) && apiData.translate?.map((item: any) => (
                         item.meanings?.map((meaning: any, meaningKey: any) => (
                             <View key={meaningKey}
                                   style={styles.content}>
