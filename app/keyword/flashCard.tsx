@@ -240,7 +240,7 @@ const FlashCardScreen = () => {
                                     onPress={() => handleLearned(filteredCards[cardIndex].id, filteredCards[cardIndex].is_learned)}>
                                     <Text style={styles.learnButtonText}>
 
-                                        {filteredCards[cardIndex].is_learned ? 'Öğrendim' : 'Çıkar'}
+                                        {filteredCards[cardIndex].is_learned ? 'Çıkar' : 'Öğrendim.'}
 
 
                                     </Text>
