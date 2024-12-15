@@ -82,14 +82,18 @@ export const getKeywordService = async (id: any) => {
 };
 
 
-export const setLearnKeywordService = async (id: any) => {
+export const setLearnKeywordService = async (id: any, isLearned: any) => {
     try {
         const response = await fetch(`${API_ENDPOINTS.setLearnKeyword}/${id}`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
+            body: JSON.stringify({
+                id: id,
+                isLearned: isLearned,
+            }),
         });
 
         if (!response.ok) {

@@ -26,8 +26,6 @@ const WordListScreen = () => {
     };
 
 
-
-
     useFocusEffect(
         React.useCallback(() => {
             fetchData();
@@ -36,7 +34,7 @@ const WordListScreen = () => {
 
     const handleLearnKeyword = async (id: string) => {
         try {
-            await setLearnKeywordService(id);
+            await setLearnKeywordService(id, true);
             setApiData((prevData) =>
                 prevData.map((item) =>
                     item.id === id ? {...item, is_learned: true} : item
@@ -85,11 +83,12 @@ const WordListScreen = () => {
                     <TouchableOpacity style={styles.shareButton}>
                         <Text style={styles.buttonText}>Paylaş</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.studyButton} onPress={() => {
+                    <TouchableOpacity style={styles.studyButton}
+                                      onPress={() => {
 
-                        // router.dismissTo('/keyword/[keywordId]')
-                        router.dismissTo('/keyword/flashCard');
-                    }}>
+                                          // router.dismissTo('/keyword/[keywordId]')
+                                          router.dismissTo('/keyword/flashCard');
+                                      }}>
                         <Text style={styles.buttonText}>Çalış</Text>
                     </TouchableOpacity>
                 </View>
@@ -143,9 +142,12 @@ const WordListScreen = () => {
                                                   // Navigate using the `navigation` prop that you received
                                                   //navigation.navigate('index');
                                                   const keywordId: string = (item?.id).toString() ?? '';
-                                                  console.log("keywordId",keywordId);
+                                                  console.log('keywordId', keywordId);
                                                   // router.dismissTo('/keyword/[keywordId]')
-                                                  router.push({ pathname: '/keyword/[keywordId]', params: { keywordId: keywordId }})
+                                                  router.push({
+                                                      pathname: '/keyword/[keywordId]',
+                                                      params: {keywordId: keywordId}
+                                                  })
                                               }}>
 
                                 <Text style={styles.wordTitle}>{item?.eng_keyword}</Text>

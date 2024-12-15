@@ -34,13 +34,11 @@ const FlashCardScreen = () => {
             setFilteredCards(data);
             setLoading(false);
         };
-        fetchData().then( );
+        fetchData().then();
     }, []);
 
     const handleSpeak = (text: string) => {
         if (text) {
-
-
 
 
             Speech.speak(text, {
@@ -48,13 +46,12 @@ const FlashCardScreen = () => {
             });
 
 
-
         }
     };
 
-    const handleLearned = async (id: string) => {
+    const handleLearned = async (id: string, isLearned: any) => {
         try {
-            await setLearnKeywordService(id);
+            await setLearnKeywordService(id, isLearned);
             setCards(prevCards =>
                 prevCards.map(card =>
                     card.id === id ? {...card, is_learned: true} : card
@@ -202,7 +199,7 @@ const FlashCardScreen = () => {
                                                 </Text>
                                                 {meaning?.definitions[0]?.example ? (
                                                     <Text style={styles.example}
-                                                                                            selectable>Example: {meaning?.definitions[0]?.example}
+                                                          selectable>Example: {meaning?.definitions[0]?.example}
                                                         <TouchableOpacity
                                                             style={styles.voiceButton}
                                                             onPress={() => handleSpeak(meaning?.definitions[0]?.example)}>
@@ -213,21 +210,21 @@ const FlashCardScreen = () => {
 
                                                     </Text>
 
-                                                ):""
+                                                ) : ''
                                                 }
 
 
-                                                { (meaning?.synonyms  && meaning?.synonyms?.length) ? (
+                                                {(meaning?.synonyms && meaning?.synonyms?.length) ? (
                                                     <Text style={styles.synonyms}
                                                           selectable>Synonyms: {meaning?.synonyms?.join(', ') || 'N/A'}</Text>
-                                                  ):""
+                                                ) : ''
                                                 }
 
 
                                                 {(meaning?.antonyms && meaning?.antonyms?.length) ? (
                                                     <Text style={styles.antonyms}
                                                           selectable>Antonyms: {meaning?.antonyms?.join(', ') || 'N/A'}</Text>
-                                                ):""
+                                                ) : ''
                                                 }
 
                                             </View>
@@ -237,8 +234,13 @@ const FlashCardScreen = () => {
 
                                 <TouchableOpacity
                                     style={styles.learnButton}
-                                    onPress={() => handleLearned(filteredCards[cardIndex].id)}>
-                                    <Text style={styles.learnButtonText}>Öğrendim</Text>
+                                    onPress={() => handleLearned(filteredCards[cardIndex].id, filteredCards[cardIndex].is_learned)}>
+                                    <Text style={styles.learnButtonText}>
+
+                                        {filteredCards[cardIndex].is_learned ? 'Öğrendim' : 'Çıkar'}
+
+
+                                    </Text>
                                 </TouchableOpacity>
                             </Animated.View>
                         </PanGestureHandler>
