@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
     View,
     TextInput,
@@ -10,8 +10,10 @@ import {
     Alert,
     ActivityIndicator,
 } from 'react-native';
-import {useRouter} from 'expo-router';
-import {createKeywordService} from '@/services/wordService'; // Servis dosyasından import
+import {createKeywordService, getCategory} from '@/services/wordService';
+import {Dropdown} from 'react-native-element-dropdown'; // Servis dosyasından import
+
+
 
 export default function AddWordScreen() {
     const [word, setWord] = useState('');
@@ -19,7 +21,42 @@ export default function AddWordScreen() {
     const [isLoading, setIsLoading] = useState(false);
     const wordInputRef = useRef<TextInput>(null); // Kelime alanı için ref
     const definitionInputRef = useRef<TextInput>(null); // Anlam alanı için ref
-    const router = useRouter();
+    const [categoryId, setCategoryId] = useState("");
+    const [isFocus, setIsFocus] = useState(false);
+    const [category, setCategory] = useState<any[]>([]);
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            const response = await getCategory();
+            const data = response.data || [];
+
+            const transformedData = data.map((item:any):any => ({
+                label: item?.description,
+                value: item?.id?.toString()
+            }));
+
+            setCategory(transformedData);
+            setIsLoading(false);
+        };
+        fetchData().then();
+    }, []);
+
+
+
+    const renderLabel = () => {
+        if (categoryId || isFocus) {
+            return (
+                <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+                    Dropdown label
+                </Text>
+            );
+        }
+        return null;
+    };
+
 
     const handleAddWord = async () => {
         if (!word || !definition) {
@@ -30,7 +67,7 @@ export default function AddWordScreen() {
         setIsLoading(true);
 
         try {
-            await createKeywordService('userId', word, definition); // Kullanıcı ID'si ve kelimeler
+            await createKeywordService('userId', word, definition ,categoryId); // Kullanıcı ID'si ve kelimeler
             Alert.alert('Başarılı', 'Kelime başarıyla eklendi.');
             setWord('');
             setDefinition('');
@@ -49,7 +86,35 @@ export default function AddWordScreen() {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 
             <View style={styles.inner}>
-                <Text style={styles.title}>Yeni Kelime Ekle</Text>
+                <View>
+
+                    <Text style={styles.title}>Yeni Kelime Ekle</Text>
+
+                    {renderLabel()}
+                    <Dropdown
+                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={category}
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isFocus ? 'Select item' : '...'}
+                        searchPlaceholder="Search..."
+                        value={categoryId}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                        onChange={(item): any => {
+                            setCategoryId(item.value);
+                            setIsFocus(false);
+                        }}
+
+                    />
+                </View>
+
 
                 <Text style={styles.label}>Kelime:</Text>
                 <TextInput
@@ -125,4 +190,39 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: '#fafafa',
     },
+    dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
+    icon: {
+        marginRight: 5,
+    },
+    dropdownlabel: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+
+
 });

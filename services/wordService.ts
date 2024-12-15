@@ -7,12 +7,13 @@ export const API_ENDPOINTS = {
     getKeyword: `${BASE_URL}/getKeyword/`,
     setLearnKeyword: `${BASE_URL}/setLearnKeyword`,
     myKeywordCount: `${BASE_URL}/myKeywordCount`,
+    getCategory: `${BASE_URL}/getCategory`,
 };
 
 export default BASE_URL;
 
 
-export const createKeywordService = async (userId: string, engKeyword: string, trKeyword: string) => {
+export const createKeywordService = async (userId: string, engKeyword: string, trKeyword: string, categoryId: any) => {
     try {
         const response = await fetch(API_ENDPOINTS.createKeyword, {
             method: 'POST',
@@ -24,6 +25,7 @@ export const createKeywordService = async (userId: string, engKeyword: string, t
                 user_id: userId,
                 eng_keyword: engKeyword,
                 tr_keyword: trKeyword,
+                category_id: categoryId,
             }),
         });
 
@@ -111,6 +113,27 @@ export const setLearnKeywordService = async (id: any, isLearned: any) => {
 export const myKeywordCount = async () => {
     try {
         const response = await fetch(`${API_ENDPOINTS.myKeywordCount}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('API isteği başarısız oldu!');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('API hatası:', error);
+        throw error;
+    }
+};
+
+export const getCategory = async () => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.getCategory}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
