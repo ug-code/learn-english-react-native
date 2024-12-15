@@ -89,7 +89,7 @@ const WordListScreen = () => {
                                           // router.dismissTo('/keyword/[keywordId]')
                                           router.dismissTo('/keyword/flashCard');
                                       }}>
-                        <Text style={styles.buttonText}>Work</Text>
+                        <Text style={styles.buttonText}>Study</Text>
                     </TouchableOpacity>
                 </View>
             </View>
