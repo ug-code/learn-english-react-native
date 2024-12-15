@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import {useRouter} from 'expo-router';
+import KeywordHeader from '@/components/keyword/keywordHeader';
 
 const KeywordCategoryScreen = () => {
     const router = useRouter();
@@ -11,17 +12,7 @@ const KeywordCategoryScreen = () => {
     return (
         <View style={styles.container}>
             {/* Üst Kısım */}
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton}
-                                  onPress={() => {
-                                      // Navigate using the `navigation` prop that you received
-                                      //navigation.navigate('index');
-                                      router.dismissTo('/')
-                                  }}
-
-                >
-                    <Ionicons name="chevron-back" size={24} color="#000" />
-                </TouchableOpacity>
+            <KeywordHeader dismissToPath="/">
                 <Text style={styles.title}>Kelimelerim</Text>
                 <Text style={styles.subtitle}>1 Kelime Listesi</Text>
 
@@ -30,7 +21,7 @@ const KeywordCategoryScreen = () => {
                 >
                     <Ionicons name="add" size={30} color="#fff" />
                 </TouchableOpacity>
-            </View>
+            </KeywordHeader>
 
             {/* Liste */}
             <View style={styles.listContainer}>
@@ -60,6 +51,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
     },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "#000",
+        textAlign: "center",
+    },
+    subtitle: {
+        fontSize: 16,
+        color: "#555",
+        textAlign: "center",
+        marginTop: 5,
+    },
     header: {
         backgroundColor: "#FAD7A0",
         paddingTop: 50,
@@ -84,18 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#000",
-        textAlign: "center",
-    },
-    subtitle: {
-        fontSize: 16,
-        color: "#555",
-        textAlign: "center",
-        marginTop: 5,
-    },
+
     listContainer: {
         marginTop: 20,
         paddingHorizontal: 20,

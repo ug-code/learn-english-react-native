@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {useFocusEffect, useLocalSearchParams, useRouter} from 'expo-router';
 import {getKeywordService} from '@/services/wordService';
 import * as Speech from 'expo-speech';
+import KeywordHeader from '@/components/keyword/keywordHeader';
 
 export default function KeywordIdScreen() {
 
@@ -48,23 +49,11 @@ export default function KeywordIdScreen() {
     return (
         <View style={styles.container}>
             {/* Üst Kısım */}
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton}
 
-                                  onPress={() => {
-                                      // Navigate using the `navigation` prop that you received
-                                      //navigation.navigate('index');
-                                      router.dismissTo('/keyword/wordList')
-                                  }}>
-                    <Ionicons name="chevron-back"
-                              size={24}
-                              color="#000"/>
-                </TouchableOpacity>
+            <KeywordHeader dismissToPath="/keyword/wordList">
                 <Text style={styles.headerTitle}>Kelimelerim</Text>
                 <Text style={styles.subtitle}>1 Kelime Listesi</Text>
-
-            </View>
-
+            </KeywordHeader>
 
             <View style={styles.searchContainer}>
                 <TextInput

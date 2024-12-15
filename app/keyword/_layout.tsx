@@ -1,5 +1,6 @@
 import { Stack } from "expo-router"
 import WordListScreen from '@/app/keyword/wordList';
+import FlashcardScreen from '@/app/keyword/flashCard';
 
 export default function ChatsLayout() {
     return (
@@ -14,6 +15,11 @@ export default function ChatsLayout() {
             }}/>
 
             <Stack.Screen name="[keywordId]"
+                          options={{
+                              headerShown: false
+            }}/>
+
+            <Stack.Screen name="flashCard"
                           options={{
                               headerShown: false
             }}/>

@@ -37,15 +37,6 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="keywordList"
-                options={{
-                    title: 'Kelimelerim',
-                    tabBarIcon: ({color}) =>
-                    <Ionicons name="folder-outline" size={28} color="#3b5998" />
-
-                }}
-            />
-            <Tabs.Screen
                 name="addWord"
                 options={{
                     title: 'Kelime Ekle',

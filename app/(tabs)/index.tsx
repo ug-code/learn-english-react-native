@@ -1,14 +1,37 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useRouter} from 'expo-router'; // İkonlar için
+import {useFocusEffect, useRouter} from 'expo-router';
+import {getKeywordService, myKeywordCount} from '@/services/wordService'; // İkonlar için
 
 const IndexScreen = () => {
 
-    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const router = useRouter();
+    const [apiData, setApiData] = useState<any>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
+
+    const fetchData = async () => {
+        try {
+            const response = await myKeywordCount();
+            const data = response?.data || [];
+            setApiData(data);
+
+        } catch (err) {
+            setError('Veri yüklenirken bir hata oluştu.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData().then();
+        }, [])
+    );
+
 
     return (
         <View style={styles.container}>
@@ -40,6 +63,17 @@ const IndexScreen = () => {
                     >
                         <Ionicons name="folder-outline" size={40} color="#3b5998" />
                         <Text style={styles.cardText}>Kelimelerim</Text>
+                        <View style={styles.notificationBadge}>
+                            <Text style={styles.badgeText}>
+                                {loading ? (
+                                    <ActivityIndicator size="large"
+                                                       color="#4CAF50"/>
+                                ) : (
+                                    apiData??0
+                                )}
+
+                            </Text>
+                        </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.card}>

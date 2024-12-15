@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, Acti
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
 import {useFocusEffect, useRouter} from 'expo-router';
 import {getKeywordListService, setLearnKeywordService} from '@/services/wordService';
+import KeywordHeader from '@/components/keyword/keywordHeader';
 
 const WordListScreen = () => {
     const router = useRouter();
@@ -23,6 +24,9 @@ const WordListScreen = () => {
             setLoading(false);
         }
     };
+
+
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -46,19 +50,7 @@ const WordListScreen = () => {
     return (
         <View style={styles.container}>
             {/* Üst Kısım */}
-
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton}
-
-                                  onPress={() => {
-                                      // Navigate using the `navigation` prop that you received
-                                      //navigation.navigate('index');
-                                      router.dismissTo('/keyword/keywordCategory')
-                                  }}>
-                    <Ionicons name="chevron-back"
-                              size={24}
-                              color="#000"/>
-                </TouchableOpacity>
+            <KeywordHeader dismissToPath="/keyword/keywordCategory">
                 <Text style={styles.title}>Kelimelerim</Text>
                 <Text style={styles.subtitle}>1 Kelime Listesi</Text>
                 <View style={styles.headerIcons}>
@@ -73,7 +65,7 @@ const WordListScreen = () => {
                                   color="#000"/>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeywordHeader>
 
             {/* Başlık Bölümü */}
             <View style={styles.titleContainer}>
@@ -93,7 +85,11 @@ const WordListScreen = () => {
                     <TouchableOpacity style={styles.shareButton}>
                         <Text style={styles.buttonText}>Paylaş</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.studyButton}>
+                    <TouchableOpacity style={styles.studyButton} onPress={() => {
+
+                        // router.dismissTo('/keyword/[keywordId]')
+                        router.dismissTo('/keyword/flashCard');
+                    }}>
                         <Text style={styles.buttonText}>Çalış</Text>
                     </TouchableOpacity>
                 </View>
