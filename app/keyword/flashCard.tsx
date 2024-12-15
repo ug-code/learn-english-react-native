@@ -34,14 +34,20 @@ const FlashCardScreen = () => {
             setFilteredCards(data);
             setLoading(false);
         };
-        fetchData();
+        fetchData().then( );
     }, []);
 
     const handleSpeak = (text: string) => {
         if (text) {
+
+
+
+
             Speech.speak(text, {
                 language: 'en-US',
             });
+
+
 
         }
     };
@@ -167,7 +173,7 @@ const FlashCardScreen = () => {
                                             style={styles.voiceButton}
                                             onPress={() => handleSpeak(filteredCards[cardIndex]?.eng_keyword)}>
                                             <Ionicons name="volume-high"
-                                                      size={30}
+                                                      size={15}
                                                       color="#fff"/>
                                         </TouchableOpacity>
                                     </Text>
@@ -189,7 +195,7 @@ const FlashCardScreen = () => {
                                                         style={styles.voiceButton}
                                                         onPress={() => handleSpeak(meaning?.definitions[0]?.definition)}>
                                                         <Ionicons name="volume-high"
-                                                                  size={30}
+                                                                  size={15}
                                                                   color="#fff"/>
                                                     </TouchableOpacity>
 
@@ -201,7 +207,7 @@ const FlashCardScreen = () => {
                                                             style={styles.voiceButton}
                                                             onPress={() => handleSpeak(meaning?.definitions[0]?.example)}>
                                                             <Ionicons name="volume-high"
-                                                                      size={30}
+                                                                      size={15}
                                                                       color="#fff"/>
                                                         </TouchableOpacity>
 
@@ -390,7 +396,7 @@ const styles = StyleSheet.create({
     },
     preview: {
         position: 'absolute',
-        top: '50%',
+        top: '95%',
         transform: [{translateY: -50}],
         padding: 10,
         backgroundColor: '#eee',
