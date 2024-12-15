@@ -386,11 +386,12 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     learnButton: {
-        marginTop: 20,
+        marginTop: 10,
         backgroundColor: '#4CAF50',
-        paddingVertical: 12,
+        paddingVertical: 5,
         borderRadius: 8,
         alignItems: 'center',
+        justifyContent: 'center',
     },
     learnButtonText: {
         color: '#fff',
