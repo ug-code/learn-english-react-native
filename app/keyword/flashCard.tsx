@@ -39,9 +39,14 @@ const FlashCardScreen = () => {
 
     const handleSpeak = (text: string) => {
         if (text) {
+            /*
             Speech.speak(text, {
                 language: 'en-US',
             });
+*/
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
         }
     };
 
