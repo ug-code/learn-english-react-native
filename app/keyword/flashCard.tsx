@@ -175,11 +175,14 @@ const FlashCardScreen = () => {
                                         </TouchableOpacity>
                                     </Text>
                                     <Text style={styles.phonetic}
+                                          selectable>{filteredCards[cardIndex]?.tr_keyword}
+                                    </Text>
+                                    <Text style={styles.phonetic}
                                           selectable>{filteredCards[cardIndex]?.detail[0]?.phonetic || ''}</Text>
 
 
-                                    {filteredCards[cardIndex]?.detail?.map((item: any, index: number) => (
-                                        item.meanings?.map((meaning: any, meaningKey: number) => (
+                                    {(filteredCards[cardIndex]?.detail.length>0) && filteredCards[cardIndex]?.detail?.map((item: any, index: number) => (
+                                        item?.meanings?.map((meaning: any, meaningKey: number) => (
                                             <View key={`${index}-${meaningKey}`}
                                                   style={styles.meaningContainer}>
                                                 <Text style={styles.partOfSpeech}
@@ -292,7 +295,7 @@ const styles = StyleSheet.create({
     filterContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginVertical: 10,
+        marginVertical: 3,
     },
     filterButton: {
         padding: 10,

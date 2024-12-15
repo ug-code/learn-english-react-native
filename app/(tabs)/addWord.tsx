@@ -39,6 +39,8 @@ export default function AddWordScreen() {
             }));
 
             setCategory(transformedData);
+            setCategoryId(data[0]?.id.toString());
+            setIsFocus(false);
             setIsLoading(false);
         };
         fetchData().then();
