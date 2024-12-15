@@ -40,7 +40,7 @@ const FlashCardScreen = () => {
     const handleSpeak = (text: string) => {
         if (text) {
             Speech.speak(text, {
-                language: 'en',
+                language: 'en-US',
             });
         }
     };
